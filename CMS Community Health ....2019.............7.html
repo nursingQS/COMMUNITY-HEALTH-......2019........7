@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CMS Community Health 2019 ......7 - EXAM MODE</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        body {
+            background: linear-gradient(145deg, #6a5a2a, #8a7a4a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .app {
+            width: 100vw;
+            height: 100vh;
+            height: -webkit-fill-available;
+            max-width: 100%;
+            max-height: 100%;
+            background: #f7f3ea;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.3);
+        }
+        .header {
+            background: linear-gradient(145deg, #5a4a1a, #7a6a3a);
+            color: #f7f3ea;
+            padding: 10px 18px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 56px;
+            border-bottom: 3px solid #c8b888;
+            gap: 10px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .header h1 {
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            color: #f7f3ea;
+        }
+        .header h1 span {
+            background: #c8b888;
+            color: #5a4a1a;
+            font-size: clamp(0.6rem, 1.8vw, 0.85rem);
+            padding: 3px 10px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .subtitle {
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+            opacity: 0.85;
+            color: #d4c8b0;
+        }
+        .counter {
+            background: rgba(255,255,255,0.12);
+            padding: 5px 14px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: clamp(0.8rem, 2.2vw, 1.05rem);
+            border: 2px solid #c8b888;
+            flex-shrink: 0;
+            white-space: nowrap;
+            color: #f7f3ea;
+        }
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: #d4c8b0;
+            flex-shrink: 0;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #c8b888, #7a6a3a);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            background: #f7f3ea;
+            overflow: hidden;
+            min-height: 0;
+        }
+        .chapter-indicator {
+            background: #ffffff;
+            padding: 4px 14px;
+            border-radius: 60px;
+            display: inline-block;
+            align-self: flex-start;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            color: #5a4a1a;
+            border: 2px solid #c8b888;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .chapter-indicator i {
+            background: #7a6a3a;
+            color: white;
+            padding: 1px 10px;
+            border-radius: 40px;
+            margin-right: 8px;
+            font-style: normal;
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+        }
+        .badge {
+            background: #c8b888;
+            color: #5a4a1a;
+            font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .question-area {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border: 2px solid #c8b888;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .question-header {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+        .question-number {
+            background: linear-gradient(145deg, #5a4a1a, #7a6a3a);
+            color: white;
+            width: clamp(34px, 6vw, 44px);
+            height: clamp(34px, 6vw, 44px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-weight: bold;
+            flex-shrink: 0;
+            border: 2px solid #c8b888;
+        }
+        .question-text {
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            line-height: 1.4;
+            color: #3a2a0a;
+            font-weight: 600;
+            flex: 1;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .option {
+            padding: 10px 14px;
+            border: 2px solid #ddd0c0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.12s;
+            background: #fdfaf8;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+            min-height: 44px;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+            color: #3a2a0a;
+        }
+        .option:active {
+            transform: scale(0.98);
+        }
+        .option:hover {
+            background: #f0ece0;
+            border-color: #b0a080;
+        }
+        .option-letter {
+            background: linear-gradient(145deg, #7a6a3a, #5a4a1a);
+            color: white;
+            width: clamp(30px, 5vw, 38px);
+            height: clamp(30px, 5vw, 38px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: clamp(0.85rem, 2vw, 1.05rem);
+            flex-shrink: 0;
+            border: 2px solid #c8b888;
+            transition: all 0.12s;
+        }
+        .option.selected {
+            background: #f5ece0;
+            border-color: #b0a080;
+        }
+        .option.selected .option-letter {
+            background: #b0a080;
+            color: #5a4a1a;
+            border-color: #5a4a1a;
+        }
+        .option.correct {
+            background: #d4e8d4;
+            border-color: #4a8a5a;
+        }
+        .option.correct .option-letter {
+            background: #4a8a5a;
+            border-color: #3a6a4a;
+            color: white;
+        }
+        .option.incorrect {
+            background: #f0d8d4;
+            border-color: #b06a5a;
+        }
+        .option.incorrect .option-letter {
+            background: #b06a5a;
+            border-color: #8a4a3a;
+            color: white;
+        }
+        .option.disabled {
+            cursor: default;
+            opacity: 0.85;
+        }
+        .option.disabled:hover {
+            background: #fdfaf8;
+            border-color: #ddd0c0;
+        }
+        .selected-indicator {
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            color: #7a6a3a;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+            min-height: 20px;
+        }
+        .rationale {
+            background: #f5ece0;
+            border: 2px solid #b0a080;
+            border-radius: 14px;
+            padding: 10px 14px;
+            margin-top: 6px;
+            display: none;
+            animation: slideIn 0.2s ease;
+            flex-shrink: 0;
+            max-height: 130px;
+            overflow-y: auto;
+        }
+        .rationale.show {
+            display: block;
+        }
+        .rationale h4 {
+            color: #5a4a1a;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rationale p {
+            color: #3a2a0a;
+            line-height: 1.4;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+        }
+        .result-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .result-tag.correct {
+            background: #d4e8d4;
+            color: #3a6a4a;
+            border: 1px solid #4a8a5a;
+        }
+        .result-tag.incorrect {
+            background: #f0d8d4;
+            color: #8a4a3a;
+            border: 1px solid #b06a5a;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #e8ddd0;
+            border-top: 2px solid #c8b888;
+            flex-shrink: 0;
+            min-height: 50px;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .nav-left {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .nav-right {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.12s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            touch-action: manipulation;
+            min-height: 34px;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn-primary {
+            background: linear-gradient(145deg, #7a6a3a, #5a4a1a);
+            color: white;
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        }
+        .btn-secondary {
+            background: linear-gradient(145deg, #7a6a3a, #5a4a1a);
+            color: white;
+            opacity: 0.85;
+        }
+        .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            opacity: 1;
+        }
+        .btn-random {
+            background: linear-gradient(145deg, #c8b888, #b0a080);
+            color: #5a4a1a;
+        }
+        .btn-random:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        .btn-chapter {
+            background: white;
+            color: #5a4a1a;
+            border: 2px solid #c8b888;
+            padding: 4px 12px;
+            font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+        }
+        .btn-chapter:hover:not(:disabled) {
+            background: #f0ece0;
+            transform: translateY(-1px);
+        }
+        .btn-cancel {
+            background: linear-gradient(145deg, #e8b8b0, #d48a7a);
+            color: white;
+            display: none;
+            padding: 6px 12px;
+            font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+        }
+        .btn-cancel.show {
+            display: flex;
+        }
+        .btn-skip {
+            background: linear-gradient(145deg, #9a8a80, #7a6a60);
+            color: white;
+            padding: 6px 12px;
+            font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+        }
+        .btn-skip:hover:not(:disabled) {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: min(92vw, 500px);
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: modalPop 0.2s ease;
+        }
+        .modal-header {
+            background: linear-gradient(145deg, #5a4a1a, #7a6a3a);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #c8b888;
+            flex-shrink: 0;
+        }
+        .modal-header h2 {
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            font-weight: 700;
+        }
+        .modal-close {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .modal-search {
+            padding: 10px 16px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .modal-search input {
+            width: 100%;
+            padding: 8px 14px;
+            border: 2px solid #ddd0c0;
+            border-radius: 50px;
+            font-size: clamp(0.9rem, 2.2vw, 1rem);
+            outline: none;
+            background: #fdfaf8;
+        }
+        .modal-search input:focus {
+            border-color: #b0a080;
+        }
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+        .ch-card {
+            border: 2px solid #e8ddd0;
+            border-radius: 14px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: all 0.12s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+        }
+        .ch-card:hover {
+            border-color: #b0a080;
+            background: #f0ece0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .ch-card.active {
+            border-color: #b0a080;
+            background: #f5ece0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .ch-card.hidden {
+            display: none !important;
+        }
+        .ch-num {
+            background: linear-gradient(145deg, #5a4a1a, #7a6a3a);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            flex-shrink: 0;
+            border: 2px solid #c8b888;
+        }
+        .ch-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .ch-title {
+            font-weight: 600;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            color: #3a2a0a;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ch-count {
+            font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+            color: #8a7a6a;
+            margin-top: 1px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .question-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .question-area::-webkit-scrollbar-track {
+            background: #f7f3ea;
+        }
+        .question-area::-webkit-scrollbar-thumb {
+            background: #c8b888;
+            border-radius: 10px;
+        }
+        .modal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-body::-webkit-scrollbar-track {
+            background: #f7f3ea;
+        }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #c8b888;
+            border-radius: 10px;
+        }
+        .rationale::-webkit-scrollbar {
+            width: 3px;
+        }
+        .rationale::-webkit-scrollbar-track {
+            background: #f5ece0;
+        }
+        .rationale::-webkit-scrollbar-thumb {
+            background: #b0a080;
+            border-radius: 10px;
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header { min-height: 42px; padding: 5px 14px; }
+            .header h1 { font-size: 0.85rem; }
+            .subtitle { display: none; }
+            .counter { font-size: 0.75rem; padding: 3px 10px; }
+            .main { padding: 5px 10px; }
+            .chapter-indicator { font-size: 0.65rem; padding: 3px 10px; margin-bottom: 4px; }
+            .question-area { padding: 8px 12px; border-radius: 12px; }
+            .question-header { margin-bottom: 5px; gap: 8px; }
+            .question-number { width: 26px; height: 26px; font-size: 0.75rem; border-width: 1.5px; }
+            .question-text { font-size: 0.8rem; line-height: 1.2; }
+            .option { padding: 5px 10px; min-height: 30px; gap: 8px; font-size: 0.75rem; border-radius: 10px; border-width: 1.5px; }
+            .option-letter { width: 24px; height: 24px; font-size: 0.7rem; border-width: 1.5px; }
+            .options-container { gap: 4px; }
+            .rationale { padding: 6px 10px; max-height: 60px; }
+            .rationale h4 { font-size: 0.7rem; }
+            .rationale p { font-size: 0.7rem; line-height: 1.2; }
+            .navigation { min-height: 36px; padding: 4px 8px; }
+            .btn { padding: 3px 10px; font-size: 0.65rem; min-height: 26px; gap: 3px; }
+            .selected-indicator { font-size: 0.65rem; min-height: 16px; }
+            .badge { font-size: 0.55rem; padding: 1px 6px; }
+            .result-tag { font-size: 0.6rem; padding: 1px 8px; }
+        }
+
+        @media (max-width: 360px) {
+            .header h1 { font-size: 0.85rem; }
+            .counter { font-size: 0.7rem; padding: 3px 8px; }
+            .question-text { font-size: 0.85rem; }
+            .option { font-size: 0.8rem; padding: 8px 10px; min-height: 36px; }
+            .option-letter { width: 26px; height: 26px; font-size: 0.7rem; }
+            .btn { font-size: 0.65rem; padding: 4px 8px; min-height: 28px; }
+            .navigation { min-height: 40px; padding: 4px 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+    <div class="header">
+        <div class="header-left">
+            <h1>🩺 CMS Community Health <span>......7</span></h1>
+            <div class="subtitle">60 questions · BSN 4</div>
+        </div>
+        <div class="counter" id="counter">1/60</div>
+    </div>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="main">
+        <div class="chapter-indicator" id="chapterDisplay">
+            <i id="chapterIcon">📗</i>
+            <span id="chapterName">Community Health</span>
+            <span class="badge" id="qTypeBadge">Single</span>
+            <span id="resultTag" class="result-tag"></span>
+        </div>
+        <div class="question-area" id="questionArea">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">1</div>
+                <div class="question-text" id="question"></div>
+            </div>
+            <div class="options-container" id="options"></div>
+            <div id="selectedCount" class="selected-indicator"></div>
+            <div class="rationale" id="rationale">
+                <h4>📗 RATIONALE</h4>
+                <p id="rationaleText"></p>
+            </div>
+        </div>
+    </div>
+    <div class="navigation">
+        <div class="nav-left">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousCard()">← Prev</button>
+            <button class="btn btn-random" id="randomBtn" onclick="randomCard()">🎲 Rand</button>
+            <button class="btn btn-chapter" onclick="openChapterModal()">📚 Ch</button>
+        </div>
+        <div class="nav-right">
+            <button class="btn btn-skip" id="skipBtn" onclick="skipQuestion()">⏭ Skip</button>
+            <button class="btn btn-cancel" id="cancelBtn" onclick="cancelSelection()">✕ Clear</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextCard()">Next →</button>
+        </div>
+    </div>
+</div>
+
+<!-- Chapter Modal -->
+<div class="modal-overlay" id="chapterModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>📚 Jump to Chapter</h2>
+            <button class="modal-close" onclick="closeChapterModal()">✕</button>
+        </div>
+        <div class="modal-search">
+            <input type="text" id="chSearch" placeholder="🔍 Search..." oninput="filterChapters(this.value)" />
+        </div>
+        <div class="modal-body" id="chapterGrid"></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var currentQuestion = 0;
+    var selectedOptions = [];
+    var answered = false;
+
+    var questions = [
+        {q:"A home health nurse is caring for a client who has chemotherapy-induced nausea that has been resistant to relief from pharmacological measures. Which of the following interventions should the nurse initiate? (Select all that apply.)", opts:["Maintain the head of the client's bed in an elevated position after eating.","Provide sips of room-temperature ginger ale between meals.","Offer 120 mL (4 oz) of cold milk as a meal replacement.","Use seasonings to enhance the flavor of foods.","Assist the client in using guided imagery."], correct:[0,1,4], rationale:"Elevating the head after eating helps prevent reflux and reduces nausea. Ginger ale is a natural antiemetic. Guided imagery is a complementary therapy that helps reduce nausea. Milk is not a meal replacement and strong seasonings can trigger nausea.", chapter:1, chapName:"Oncology Care", displayNumber:1},
+        {q:"A nurse working in a community health center is providing teaching to a client who has alcohol use disorder. Which of the following treatment methods should the nurse include in the teaching?", opts:["Chelation therapy","Treatment with naloxone","Cognitive behavioral therapy","Treatment with methadone"], correct:[2], rationale:"Cognitive behavioral therapy (CBT) is an evidence-based treatment for alcohol use disorder that helps clients identify triggers and develop coping strategies. Naloxone is for opioid overdose, methadone is for opioid dependence, and chelation therapy is for heavy metal poisoning.", chapter:1, chapName:"Substance Use", displayNumber:2},
+        {q:"A home health nurse is visiting a client who has right-sided weakness following a recent stroke. The client states, 'I'm not sure how I will buy my groceries since I can't go back to work.' Which of the following actions should the nurse take?", opts:["Offer to bring groceries to the client on a regular basis.","Initiate a referral for the client to a social worker.","Contact friends and neighbors to shop for the client.","Provide the client information about respite care."], correct:[1], rationale:"A social worker can help the client access community resources, financial assistance, and meal delivery programs. The nurse should not take on the role of personal shopper or involve friends/neighbors without client consent. Respite care is for caregivers.", chapter:1, chapName:"Case Management", displayNumber:3},
+        {q:"A group of technicians from a local automotive repair shop presents to an urgent care clinic with reports of dizziness, headaches, and nausea. After providing needed care to the clients, which of the following government agencies should the nurse notify to follow up on these reports?", opts:["Environmental Protection Agency","Occupational Safety and Health Administration","Centers for Disease Control and Prevention","Department of Health and Human Services"], correct:[1], rationale:"OSHA is responsible for workplace safety and health, including investigating potential occupational exposures. The EPA handles environmental issues, CDC handles disease outbreaks, and HHS oversees health programs.", chapter:1, chapName:"Occupational Health", displayNumber:4},
+        {q:"A faith community nurse is preparing to meet with the family of an adolescent who has leukemia. Which of the following actions should the nurse plan to take?", opts:["Direct conversation to the parents to avoid embarrassing the adolescent.","Determine how the adolescent's health has affected family roles.","Ask another family from the same faith congregation to attend the meeting for support.","Focus the discussion on the adolescent's future career plans."], correct:[1], rationale:"Assessing how the illness has impacted family roles helps identify stressors and plan appropriate interventions. Excluding the adolescent violates patient-centered care, and inviting other families breaches privacy.", chapter:1, chapName:"Family Nursing", displayNumber:5},
+        {q:"A nurse is assessing an outbreak of mumps among school-age children. Using the epidemiological triangle, the nurse should recognize that which of the following is the host?", opts:["The school","The vaccine","The virus","The children"], correct:[3], rationale:"The host is the living organism affected by the disease. In this case, the school-age children are the host. The virus is the agent, the school is the environment, and the vaccine is an intervention.", chapter:1, chapName:"Epidemiology", displayNumber:6},
+        {q:"A home health nurse is reviewing messages from a group of clients. Which of the following clients should the nurse contact first?", opts:["A mother who reports that her son vomited after a dose of methylphenidate.","A client who has COPD and reports an oxygen saturation of 90%.","A client who reports that her new colostomy stoma appears purple.","A client who reports feeling a vibration in his new internal arteriovenous graft for dialysis."], correct:[2], rationale:"A purple stoma indicates ischemia or necrosis of the bowel tissue, which is a medical emergency requiring immediate intervention. Vomiting after methylphenidate, O2 sat of 90% in COPD, and vibration in an AV graft are concerning but not immediately life-threatening.", chapter:1, chapName:"Home Health", displayNumber:7},
+        {q:"A nurse manager is reviewing the disaster plan at a long-term care facility. Which of the following is the most comprehensive method for the nurse to use to determine the effectiveness of the plan?", opts:["Test staff to determine their knowledge of the principles of the plan.","Use in-services to have the staff discuss various disaster scenarios.","Review how the staff implements the plan during a hands-on practice drill.","Analyze findings from a facility tabletop disaster simulation."], correct:[2], rationale:"Hands-on practice drills provide the most comprehensive evaluation because they test actual implementation, coordination, and response in a realistic setting. Knowledge tests and tabletop discussions are less comprehensive.", chapter:1, chapName:"Disaster Planning", displayNumber:8},
+        {q:"A school nurse is discussing stress management techniques with a group of adolescents. Which of the following activities reported by an adolescent should the nurse identify as the priority?", opts:["Staying up all night playing online video games.","Listening to loud music for several hours.","Talking about others on social media.","Scratching or piercing the skin."], correct:[3], rationale:"Self-harm behaviors like scratching or piercing the skin indicate serious emotional distress and require immediate intervention. Sleep deprivation, loud music, and social media use are concerning but not as urgent as self-harm.", chapter:1, chapName:"Mental Health", displayNumber:9},
+        {q:"A faith community nurse is planning care for a client who has been diagnosed with end-stage breast cancer. Which of the following interventions should the nurse include in the plan?", opts:["Provide quiet time during visits for prayer or meditation.","Recommend the client seek hospice services rather than seek treatment.","Place the client's name and medical condition on an online prayer chain.","Initiate topics of conversation that avoid the client's health status."], correct:[0], rationale:"Providing quiet time for prayer or meditation respects the client's spiritual needs and promotes holistic care. The nurse should not make treatment decisions for the client, post personal health information online, or avoid discussing health status if the client wishes to discuss it.", chapter:1, chapName:"Spiritual Care", displayNumber:10},
+        {q:"A community health nurse is teaching a group of clients about available resources to assist with recovery following a stroke. Which of the following resources should the nurse recommend for clients who are experiencing dysphagia?", opts:["Physical therapist","Restorative aide","Occupational therapist","Speech-language pathologist"], correct:[3], rationale:"Speech-language pathologists specialize in evaluating and treating swallowing disorders (dysphagia). Physical therapists focus on mobility, occupational therapists on ADLs, and restorative aides assist with rehabilitation exercises.", chapter:1, chapName:"Stroke Rehabilitation", displayNumber:11},
+        {q:"An occupational health nurse is discussing health promotion with a client who has a history of obesity. Which of the following comments indicates the client is using rationalization as a coping mechanism?", opts:["'I am obese because it's in my genes.'","'I have difficulty resisting the items in vending machines.'","'I know you don't like me because I am obese.'","'I have lots of health problems from being obese.'"], correct:[0], rationale:"Rationalization involves creating logical explanations to justify behavior. Blaming genetics for obesity is a form of rationalization. Option B is honesty, option C is projection, and option D is acknowledgment of consequences.", chapter:1, chapName:"Mental Health", displayNumber:12},
+        {q:"A home health nurse is assessing a client who has AIDS. Which of the following responses by the client indicates a risk for suicide?", opts:["'I don't want to lose control of my ability to make decisions.'","'I know that everything will be better soon.'","'I am relying more and more on my partner for support.'","'I am afraid of experiencing pain near the end.'"], correct:[1], rationale:"Overly positive statements like 'everything will be better soon' from a client with a serious illness can indicate hopelessness or suicidal ideation. Concerns about decision-making, relying on support, and fear of pain are normal responses.", chapter:1, chapName:"Mental Health", displayNumber:13},
+        {q:"Several nurses are developing a parish nurse group to help address the primary and secondary health care needs of the congregation. Which of the following services should the nurses plan to provide to the congregation?", opts:["Organize an influenza immunization clinic with the American Red Cross.","Provide end-of-life care for members who are terminal.","Perform wound care in the home of members.","Facilitate discharge from the facility to the home."], correct:[0], rationale:"Immunization clinics are a primary prevention service that addresses the health needs of the congregation. End-of-life care, wound care, and discharge facilitation are more specialized services typically provided by hospice or home health agencies.", chapter:1, chapName:"Faith Community Nursing", displayNumber:14},
+        {q:"A nurse is providing education to the family of a school-age child who has pertussis. Which of the following information should the nurse include in the teaching?", opts:["A dehumidifier should be placed beside the child's bed.","The child is most contagious after the rash develops.","Transmission will be limited because of herd immunity.","Household contacts will receive prophylactic antibiotics."], correct:[3], rationale:"Household contacts of a person with pertussis should receive prophylactic antibiotics to prevent transmission. A humidifier (not dehumidifier) helps with cough, pertussis is most contagious during the catarrhal stage (not after rash), and herd immunity is not reliable for pertussis.", chapter:1, chapName:"Infectious Disease", displayNumber:15},
+        {q:"A nurse is planning a program about healthy eating at an elementary school where most students select french fries and pizza at lunch every day. Which of the following actions should the nurse plan to take first?", opts:["Give positive feedback to students who make appropriate choices.","Help students recognize the value of making healthy food choices.","Determine students' motivation to learn about healthy food choices.","Provide students with resources about making wise choices independently."], correct:[2], rationale:"Assessment of the learners' motivation is the first step in program planning. This helps the nurse understand barriers and tailor the program effectively. Positive feedback, helping recognize value, and providing resources are implementation steps.", chapter:1, chapName:"Health Education", displayNumber:16},
+        {q:"A nurse is participating in an outreach program to combat an encephalitis outbreak linked to local mosquito vectors. Which of the following control strategies should the nurse implement directly in the community?", opts:["Surveying the area for tracking long-term vector disabilities.","Auditing past medical records to determine local baseline morbidity.","Researching specific classifications of mosquito sub-species.","Issuing a public media announcement to eliminate all standing water."], correct:[3], rationale:"Issuing a public media announcement to eliminate standing water is a direct community intervention to reduce mosquito breeding sites. The other options are surveillance or research activities, not direct control measures.", chapter:1, chapName:"Infectious Disease", displayNumber:17},
+        {q:"A nurse is teaching a client who has a terminal illness about hospice care. Which of the following statements by the client indicates an understanding of the teaching?", opts:["'I will need to have private insurance because Medicare does not cover hospice services.'","'I can receive care in the hospital or at home.'","'My provider will recommend that I enter hospice care when I have 1 year left to live.'","'I will receive care from a variety of interprofessional team members.'"], correct:[1], rationale:"Hospice care can be delivered in various settings including home, hospitals, and nursing facilities. Medicare covers hospice, prognosis is typically 6 months or less, and interprofessional care is a feature of hospice (also correct but B is the most direct understanding).", chapter:1, chapName:"Hospice Care", displayNumber:18},
+        {q:"A nurse is providing teaching to a newly licensed nurse about secondary prevention strategies related to violence and abuse. Which of the following strategies should the nurse include in the teaching?", opts:["Teach a parenting skills class at a child development center.","Assess clients for withdrawal and passivity during home health visits.","Refer clients to the appropriate community agency if signs of abuse are evident.","Coordinate a personal defense program at a local agency."], correct:[1], rationale:"Secondary prevention focuses on early identification and intervention. Assessing for signs of withdrawal and passivity during home visits helps identify potential abuse early. Parenting classes and personal defense programs are primary prevention, and referral is tertiary prevention.", chapter:1, chapName:"Violence Prevention", displayNumber:19},
+        {q:"A nurse is developing a health-screening program for clients who are at risk for hypertension. Which of the following actions should the nurse take first?", opts:["Conduct a survey to identify the community's need for hypertension screening.","Research best practices for treatment of hypertension.","Determine the number of clients referred for treatment of hypertension.","Apply for funding to conduct hypertension screening."], correct:[0], rationale:"Assessment of community need is the first step in program development. Understanding the scope of the problem helps justify the program and guide planning. Researching treatment, determining referrals, and applying for funding are subsequent steps.", chapter:1, chapName:"Program Planning", displayNumber:20},
+        {q:"A hospice nurse is planning care for a client who follows traditional American Indian practices. Which of the following actions should the nurse plan to take?", opts:["Offer to face the client's bed toward the east.","Provide direct eye contact when communicating with the client's family.","Develop a list of appropriate hot and cold food choices.","Discuss the safe use of herbal medications."], correct:[0], rationale:"In many traditional American Indian cultures, facing the bed toward the east is a spiritual practice. Direct eye contact may be considered disrespectful, hot/cold food concepts are from other traditions, and herbal medication discussions should involve the client's preferences.", chapter:1, chapName:"Cultural Competence", displayNumber:21},
+        {q:"A nurse is working to reduce individual and family violence in the local community. Which of the following actions by the nurse demonstrates a primary prevention strategy to achieve this goal?", opts:["Providing treatment for a young adult who has a substance use disorder.","Teaching parenting techniques to new parents.","Conducting counseling for at-risk parents.","Assessing a family for marital discord."], correct:[1], rationale:"Primary prevention aims to prevent violence before it occurs. Teaching parenting techniques to new parents helps prevent child abuse. Treatment, counseling, and assessment are secondary or tertiary interventions.", chapter:1, chapName:"Violence Prevention", displayNumber:22},
+        {q:"A nurse at a health department is discussing regulations regarding STIs during a staff education session. Which of the following statements by a staff member indicates an understanding of the information?", opts:["'Clients who have STIs are legally required to provide a list of sexual partners.'","'Congress mandates the requirements for STI reporting.'","'Nurses should withhold the name of the client who has an STI during partner notification.'","'State health departments report selected STIs to the National Institutes of Health.'"], correct:[2], rationale:"Partner notification should be done confidentially without revealing the index client's identity. Clients are encouraged but not legally required to provide partner lists, STI reporting is mandated by state (not Congress) laws, and reports go to CDC (not NIH).", chapter:1, chapName:"STIs", displayNumber:23},
+        {q:"A public health nurse is providing educational materials to a client who has a new diagnosis of hepatitis A. Which of the following information should the nurse focus on to prevent transmission?", opts:["Practicing safe blood disposal methods.","Ensuring proper hand hygiene after using the restroom.","Avoiding the sharing of unsterilized needles.","Wearing a surgical mask in public spaces."], correct:[1], rationale:"Hepatitis A is transmitted via the fecal-oral route. Proper hand hygiene after using the restroom is the most important prevention measure. Blood disposal and needle sharing are relevant to hepatitis B/C, and masks are not effective for hepatitis A transmission.", chapter:1, chapName:"Infectious Disease", displayNumber:24},
+        {q:"A community health nurse is assigned to implement a disaster plan for the area. Which of the following actions should the nurse include as part of the response phase?", opts:["Create a checklist of needed supplies for each type of disaster.","Conduct community disaster drills.","Develop an evacuation plan for the community.","Establish a location to perform client triage."], correct:[3], rationale:"Establishing a triage location is a response phase action that occurs during the disaster. Creating supply checklists, conducting drills, and developing evacuation plans are preparedness phase activities.", chapter:1, chapName:"Disaster Management", displayNumber:25},
+        {q:"A nurse is working with a case manager for a client who participates in a health maintenance organization (HMO). The nurse should identify that a health maintenance organization provides which of the following payment structures?", opts:["The provider is paid a fixed sum for the client on a monthly or yearly basis.","The provider bills the client directly for a predetermined percentage of the cost of services.","The client is participating in a fee-for-service health care insurance program.","The client pays the insurer a percentage of the total costs for each service rendered by the provider."], correct:[0], rationale:"HMOs use a capitation payment model where providers receive a fixed payment per enrolled member regardless of services used. This encourages preventive care. Fee-for-service, co-insurance, and percentage billing are characteristic of other payment models.", chapter:1, chapName:"Healthcare Systems", displayNumber:26},
+        {q:"A school nurse is planning safety education for a group of adolescents. The nurse should give priority to which of the following topics as the leading cause of death for this age group?", opts:["Substance abuse prevention","Sports injury prevention","Motor vehicle safety","Gun safety"], correct:[2], rationale:"Motor vehicle accidents are the leading cause of death among adolescents. Safety education should prioritize seatbelt use, distracted driving prevention, and passenger safety.", chapter:1, chapName:"School Health", displayNumber:27},
+        {q:"A school nurse is implementing health screenings. Which of the following assessment findings should the nurse recognize as the highest priority?", opts:["An adolescent who has scoliosis","An adolescent who has psoriasis","A child who has nits","A child who has a BMI of 18"], correct:[0], rationale:"Scoliosis requires early detection and intervention to prevent progression. Psoriasis and nits are not urgent, and a BMI of 18 is within normal range (underweight is <18.5).", chapter:1, chapName:"School Health", displayNumber:28},
+        {q:"A first-response team is working at the location of a bombing incident. A nurse triaging a group of clients should give treatment priority to which of the following clients?", opts:["A client who has a rigid abdomen with manifestations of shock.","A client who has a femur fracture with a 2+ pedal pulse.","A client who is ambulatory and exhibits manic behavior.","A client who has superficial partial-thickness burn injuries over 5% of his body."], correct:[0], rationale:"A rigid abdomen with shock indicates internal bleeding, which is immediately life-threatening but treatable with surgery (red tag). Femur fracture with intact pulses is yellow, ambulatory manic behavior is green/minor, and small burns are green.", chapter:1, chapName:"Disaster Triage", displayNumber:29},
+        {q:"A nurse is teaching a client who is to undergo enzyme-linked immunosorbent assay (ELISA) testing for HIV. Which of the following information should the nurse include?", opts:["The test measures serum levels of HIV antibodies.","The test monitors the progression of HIV.","The test results are accurate 24 hr after HIV exposure.","A positive result indicates initiation of immunoglobulin administration."], correct:[0], rationale:"ELISA testing detects HIV antibodies in the serum. It does not monitor disease progression (viral load tests do that), takes weeks to months to become positive after exposure, and a positive result requires confirmatory testing, not immunoglobulin administration.", chapter:1, chapName:"HIV/AIDS", displayNumber:30},
+        {q:"A home health nurse is preparing to teach the family of a client who has a new diagnosis of HIV about infection control. Which of the following factors should the nurse identify as an educator-related barrier to learning?", opts:["Use of humor to deal with disruptive behavior.","Previous experience teaching HIV management courses.","Use of educational materials in written and video format.","Reliance on written notes during the teaching session."], correct:[3], rationale:"Reliance on written notes during teaching can be a barrier if the educator is not engaging or if the family has low literacy. The other options are positive factors that facilitate learning.", chapter:1, chapName:"Health Education", displayNumber:31},
+        {q:"A community health nurse encounters a client who has a suspected bioterrorism-related illness. Which of the following actions should the nurse take?", opts:["Report the client's condition to the Federal Bureau of Investigation.","Don personal protective equipment.","Disinfect contaminated areas of skin with isopropyl alcohol.","Move the client to a quarantine area."], correct:[1], rationale:"Donning appropriate PPE is the first priority to protect the nurse and prevent further spread. Reporting to FBI, disinfecting with alcohol, and moving to quarantine are subsequent actions after PPE is in place.", chapter:1, chapName:"Bioterrorism", displayNumber:32},
+        {q:"A nurse at a community mental health center is caring for a client who has antisocial personality disorder. Which of the following actions should the nurse include in the plan of care?", opts:["Teach the client how to minimize feelings of guilt.","Have the client participate in assertiveness training.","Bargain with the client about behavioral consequences.","Assist the client to identify acceptable outlets of anger."], correct:[3], rationale:"Clients with antisocial personality disorder often have difficulty managing anger appropriately. Assisting them to identify acceptable outlets is therapeutic. They typically do not experience guilt, assertiveness training is less effective, and bargaining reinforces manipulative behavior.", chapter:1, chapName:"Mental Health", displayNumber:33},
+        {q:"A case manager in a rehabilitation facility is discussing discharge plans with a client who has a pressure injury and requires a special bed at home. Which of the following statements should the case manager make first?", opts:["'Describe the place where you are currently living.'","'Apply moisture barrier ointment three times a day.'","'Eat a balanced diet with high-protein snacks.'","'A social worker can help you with the cost of supplies.'"], correct:[0], rationale:"Assessing the home environment is the first step to determine if the special bed can be accommodated. The other interventions are important but follow the assessment of home capabilities.", chapter:1, chapName:"Case Management", displayNumber:34},
+        {q:"A nurse is speaking with several clients at a health fair. Which of the following statements should the nurse assess further?", opts:["'I have to change my hearing aid battery weekly.'","'I have to turn my head completely to see things that are beside me.'","'I prepare my medications for the week on Sundays.'","'I prepare all of my own meals.'"], correct:[1], rationale:"Turning the head completely to see things beside them may indicate peripheral vision loss, which could be a sign of glaucoma or other eye conditions requiring further assessment. The other statements describe normal activities.", chapter:1, chapName:"Health Assessment", displayNumber:35},
+        {q:"A home health nurse is discussing electrical hazards with a client. Which of the following statements should the nurse include?", opts:["'You should pull on the cord when unplugging items.'","'You should cover electrical cords with an area rug.'","'You should limit your use of extension cords.'","'You should secure extension cords with clear packing tape.'"], correct:[2], rationale:"Limiting extension cords reduces fire and tripping hazards. Pulling cords damages wiring, covering cords with rugs traps heat and creates fire risk, and tape is not a safe method for securing cords.", chapter:1, chapName:"Home Safety", displayNumber:36},
+        {q:"A nurse manager in a community health clinic is reviewing secondary prevention activities with a group of nurses during orientation. Which of the following activities should the nurse manager include as an example of secondary prevention?", opts:["Educate a client who has hypertension about exercises to reduce blood pressure.","Teach a group of school-age children about hand hygiene.","Provide nutrition counseling for an adolescent who is underweight.","Test a client who has a family history for diabetes mellitus."], correct:[3], rationale:"Testing a client with a family history of diabetes is secondary prevention (early detection). Educating about hypertension exercises is tertiary, teaching hand hygiene is primary, and nutrition counseling for underweight is secondary if screening-based, but testing is the clearest example.", chapter:1, chapName:"Prevention Levels", displayNumber:37},
+        {q:"A nurse manager at a clinic is reviewing the preventive services offered to clients. Which of the following activities should the nurse identify as a secondary prevention activity?", opts:["Advocate for laws that prohibit texting while driving.","Provide a smoking cessation class.","Refer a client who is recovering from a substance use disorder to a social service program.","Encourage a pregnant client to participate in prenatal care."], correct:[3], rationale:"Prenatal care involves screening and early detection of complications, making it secondary prevention. Advocacy and smoking cessation are primary, and referral to social services is tertiary.", chapter:1, chapName:"Prevention Levels", displayNumber:38},
+        {q:"A community health clinic is planning annual goals. Which of the following outcomes addresses the ethical principle of distributive justice?", opts:["Clients demonstrate completion of advance directives.","Clients receive Medicare benefits when eligible.","Clients verbalize their right to refuse treatment.","Clients understand their right to confidentiality."], correct:[1], rationale:"Distributive justice focuses on fair distribution of resources and benefits. Ensuring clients receive Medicare benefits when eligible addresses equitable access to healthcare resources. Advance directives relate to autonomy, refusal relates to autonomy, and confidentiality relates to privacy.", chapter:1, chapName:"Ethics", displayNumber:39},
+        {q:"A community health nurse is teaching a group of older adult clients about hypertension. The nurse should identify which of the following as a client-related barrier to learning?", opts:["Low literacy","Limited experience","Lack of credibility","Fear of public speaking"], correct:[0], rationale:"Low literacy is a client-related barrier that affects the ability to understand health information. Limited experience and fear of public speaking are not barriers to one-on-one learning, and lack of credibility is an educator-related barrier.", chapter:1, chapName:"Health Education", displayNumber:40},
+        {q:"A case manager is planning home health care for a client who has a major burn injury. Which of the following interventions should the case manager plan to make?", opts:["Assess the client's need for wound care supplies.","Provide physical and occupational therapy for the client in her home.","Deliver family counseling to members of the client's household.","Administer personal care with bathing, dressing, and meal preparation for the client."], correct:[0], rationale:"The case manager's role includes assessing needs and coordinating services. Assessing wound care supply needs is appropriate. Providing direct therapy, counseling, or personal care is outside the case manager's scope and would be delegated to other providers.", chapter:1, chapName:"Case Management", displayNumber:41},
+        {q:"A community health nurse is planning an educational program for a group of women who are postmenopausal. Which of the following outcomes is appropriate for this program?", opts:["Clients will start hormone replacement therapy.","Clients will significantly decrease caloric intake.","Clients will schedule bone density screenings.","Clients will arrange for mammograms every 3 years."], correct:[2], rationale:"Bone density screening is recommended for postmenopausal women to assess osteoporosis risk. HRT is a medical decision, not an educational outcome, significant caloric decrease is not appropriate, and mammograms are recommended annually (not every 3 years).", chapter:1, chapName:"Women's Health", displayNumber:42},
+        {q:"A nurse providing care to a client with a confirmed case of tuberculosis is reviewing the client's understanding of the disease. Which of the following statements by the client indicates that the teaching has been effective?", opts:["'I will be taking medication daily for at least 6 months.'","'I will need to have a special HEPA filter installed in my home.'","'I will make sure to stop taking my medication as soon as I start feeling better.'","'I can stop taking my medication once my cough goes away.'"], correct:[0], rationale:"TB treatment requires daily medication for at least 6 months to prevent drug resistance and relapse. HEPA filters are not routinely required, and stopping medication when feeling better or when cough resolves can lead to relapse and resistance.", chapter:1, chapName:"Tuberculosis", displayNumber:43},
+        {q:"A nurse is developing health promotion strategies for older adult clients at an assisted living facility. Which of the following strategies is the priority for the nurse to include?", opts:["Scheduling annual dental examinations for the clients.","Encouraging the clients to exercise regularly.","Immunizing the clients against influenza.","Providing the clients with a low-fat diet."], correct:[2], rationale:"Influenza immunization is the priority because older adults are at high risk for serious complications from influenza. While dental exams, exercise, and low-fat diets are important, immunization has the most immediate impact on preventing serious illness.", chapter:1, chapName:"Immunizations", displayNumber:44},
+        {q:"A public health nurse is developing protocols to use in emergency shelters following a disaster. Which of the following interventions should the nurse include as a secondary prevention strategy for clients who survive a disaster?", opts:["Publishing a listing of shelter locations in local media sources.","Compiling resources available to transition individuals from shelters to a home.","Interviewing shelter residents to determine the effectiveness of coping behaviors.","Providing age-appropriate activities for shelter residents."], correct:[2], rationale:"Secondary prevention focuses on early identification of problems. Interviewing residents to assess coping effectiveness helps identify those who may need mental health support. Publishing shelter locations is primary, transition resources are tertiary, and activities are supportive but not prevention.", chapter:1, chapName:"Disaster Management", displayNumber:45},
+        {q:"A nurse at a shelter is assisting with client triage after a tornado destroyed a community. Which of the following clients should receive priority care?", opts:["An adult client who is short of breath.","An infant client who is crying.","An older adult client who has a fractured arm.","A school-age child who has a head abrasion."], correct:[0], rationale:"Shortness of breath indicates a potential respiratory or cardiac emergency requiring immediate attention. Crying infant, fractured arm, and head abrasion are urgent but not immediately life-threatening.", chapter:1, chapName:"Disaster Triage", displayNumber:46},
+        {q:"A nurse is caring for a client who is homeless. Which of the following actions should the nurse take first?", opts:["Develop client teaching using a variety of strategies.","Determine the client's understanding of her living situation.","Assist the client to develop goals for obtaining shelter.","Discuss the risks of being homeless with the client."], correct:[1], rationale:"Assessment of the client's understanding and perception of her situation is the first step. This builds trust and helps tailor interventions. Developing teaching, setting goals, and discussing risks are subsequent steps after assessment.", chapter:1, chapName:"Vulnerable Populations", displayNumber:47},
+        {q:"A school nurse is assessing a child and discovers Koplik spots on the child's buccal mucosa. Which of the following actions should the nurse take?", opts:["Check the child's classmates for parotid gland enlargement.","Ask the caregivers if the child recently used alcohol-based mouthwash.","Review the immunization records of the child's classmates.","Instruct the caregivers to increase the child's Vitamin B12 intake."], correct:[2], rationale:"Koplik spots are indicative of measles. Reviewing immunization records of classmates is essential for outbreak control. Parotid enlargement indicates mumps, mouthwash doesn't cause Koplik spots, and Vitamin B12 is not relevant.", chapter:1, chapName:"Infectious Disease", displayNumber:48},
+        {q:"An occupational health nurse is preparing for an initial meeting with a committee planning a health fair for an industrial work site. Which action should the nurse instruct them to take first?", opts:["Obtain necessary supplies and equipment.","Determine the health concerns of the employees.","Market the health fair to the employees.","Make a list of expected outcomes for the health fair."], correct:[1], rationale:"Determining the health concerns of employees is the first step in planning a health fair to ensure the program addresses actual needs. Obtaining supplies, marketing, and listing outcomes are subsequent steps.", chapter:1, chapName:"Program Planning", displayNumber:49},
+        {q:"A nurse is preparing a community education program about primary prevention strategies for Lyme disease. Which of the following information should the nurse include?", opts:["Apply an antibiotic ointment if a tick bite occurs.","Wear dark-colored clothing when walking through woods.","Inspect the skin for ticks every 24 hours after outdoor activities.","Check the child's classmates for similar rashes."], correct:[2], rationale:"Inspecting skin for ticks every 24 hours is a primary prevention strategy to prevent Lyme disease. Antibiotic ointment is treatment, dark clothing makes ticks harder to see (light clothing is recommended), and checking classmates is not prevention.", chapter:1, chapName:"Infectious Disease", displayNumber:50},
+        {q:"A community health nurse is reviewing the city's health data and notes an increase in the crude mortality rate. Which of the following actions should the nurse take first?", opts:["Request additional funding for health programs.","Determine the specific causes of death within the population.","Implement a public education campaign.","Consult with local health care providers."], correct:[1], rationale:"Determining the specific causes of death is the first step to identify trends and plan targeted interventions. Requesting funding, implementing campaigns, and consulting providers are subsequent actions based on the findings.", chapter:1, chapName:"Epidemiology", displayNumber:51},
+        {q:"A home health nurse is conducting an assessment for an older adult client who lives alone. Which of the following findings should indicate to the nurse that the client is experiencing neglect?", opts:["The client wears clothes that are out of style.","The client has expired medications in their cabinet.","The client's home has cluttered walkways.","The client has an unsterile dressing on a chronic wound."], correct:[3], rationale:"An unsterile dressing on a chronic wound indicates neglect of basic healthcare needs. Out-of-style clothes, expired medications (if not taking them), and cluttered walkways are concerning but not direct indicators of neglect as clearly as an unsterile wound dressing.", chapter:1, chapName:"Elder Abuse", displayNumber:52},
+        {q:"A public health nurse is responding to a potential outbreak of foodborne illness in the community. Which of the following actions should the nurse perform during the assessment phase?", opts:["Provide treatment to affected individuals.","Interview clients who became ill to find a common food source.","Order the temporary closure of the suspected restaurant.","Educate restaurant staff on proper food handling techniques."], correct:[1], rationale:"During the assessment phase, the nurse interviews affected individuals to identify the common source of illness. Treatment, closures, and education are intervention phase activities.", chapter:1, chapName:"Epidemiology", displayNumber:53},
+        {q:"A school nurse is teaching a parent of a child who has pediculosis capitis. Which of the following instructions should the nurse include in the teaching?", opts:["Discard all stuffed animals the child plays with.","Seal non-washable items in a plastic bag for 2 weeks.","Wash the child's bedding in cold water.","Apply a petroleum-based ointment to the child's scalp."], correct:[1], rationale:"Non-washable items should be sealed in plastic bags for 2 weeks to suffocate lice. Stuffed animals don't need to be discarded, bedding should be washed in hot water (not cold), and petroleum-based ointments are not effective treatment.", chapter:1, chapName:"Pediculi", displayNumber:54},
+        {q:"A nurse is coordinating care for a client who requires multi-agency assistance following a house fire. Which of the following actions exemplifies the nurse's role as a case manager?", opts:["Providing emotional support to the family members.","Teaching the client how to use a fire extinguisher.","Facilitating a meeting between the client, housing authority, and insurance agent.","Distributing donated clothing items to the family."], correct:[2], rationale:"Coordinating and facilitating meetings between multiple agencies is a core case management function. Providing emotional support, teaching, and distributing items are direct care or volunteer roles, not case management.", chapter:1, chapName:"Case Management", displayNumber:55},
+        {q:"A community health nurse is planning a primary prevention program for adolescents regarding tobacco use. Which of the following activities should the nurse choose?", opts:["Distributing nicotine patches to students who want to quit smoking.","Screening students for early signs of respiratory damage.","Showing a video about the immediate social consequences of smoking.","Referring students to a local smoking cessation support group."], correct:[2], rationale:"Primary prevention aims to prevent tobacco use before it starts. Showing a video about social consequences is a primary prevention strategy. Nicotine patches and cessation groups are tertiary/secondary, and screening is secondary.", chapter:1, chapName:"Prevention Levels", displayNumber:56},
+        {q:"A nurse is assessing a client who has a positive tuberculin skin test (TST). Which of the following findings should the nurse identify as a clinical manifestation of active pulmonary tuberculosis?", opts:["Weight gain","Night sweats","Increased appetite","High-pitched wheezing"], correct:[1], rationale:"Night sweats are a classic symptom of active TB. Other symptoms include weight loss (not gain), decreased appetite, and productive cough. High-pitched wheezing is not typical of TB.", chapter:1, chapName:"Tuberculosis", displayNumber:57},
+        {q:"A home health nurse is assessing a client who has diabetes mellitus. The nurse notes that the client is not adhering to their prescribed insulin regimen. Which of the following actions should the nurse take first?", opts:["Notify the provider about the client's non-adherence.","Provide written educational materials about diabetes complications.","Explore the client's reasons for not taking the insulin.","Arrange for a family member to administer the injections."], correct:[2], rationale:"Exploring the client's reasons for non-adherence is the first step to understand barriers and develop a collaborative solution. Notifying the provider, providing education, and arranging for family administration are subsequent steps.", chapter:1, chapName:"Home Health", displayNumber:58},
+        {q:"A nurse manager in a public health clinic is reviewing data regarding a recent influenza vaccination campaign. Which of the following indicators should the nurse use to evaluate the efficiency of the program?", opts:["The total number of vaccines administered.","The cost per vaccine dose delivered to clients.","The percentage of the target population reached.","The reduction in the community's influenza infection rate."], correct:[1], rationale:"Efficiency measures the relationship between resources used and outcomes achieved. Cost per vaccine dose delivered is the best indicator of efficiency. Total vaccines administered measures volume, percentage reached measures coverage, and infection rate reduction measures effectiveness (not efficiency).", chapter:1, chapName:"Program Evaluation", displayNumber:59},
+        {q:"A nurse is assigned to triage clients arriving at an emergency department after a chemical plant explosion. Which of the following clients should the nurse categorize as red (immediate priority)?", opts:["A client who is unconscious with agonal respirations.","A client who has a compound fracture of the radius with controlled bleeding.","A client who is experiencing severe respiratory distress and stridor.","A client who has minor chemical burns on both forearms."], correct:[2], rationale:"Severe respiratory distress with stridor indicates an airway emergency requiring immediate intervention (red tag). Agonal respirations with unconsciousness may be expectant/black, compound fracture with controlled bleeding is yellow, and minor burns are green.", chapter:1, chapName:"Disaster Triage", displayNumber:60}
+    ];
+
+    var chapterList = [
+        {ch:1, name:"Community Health & Nursing", count: questions.filter(function(q){return q.chapter===1;}).length}
+    ];
+
+    var chapterIndex = {};
+    questions.forEach(function(q, idx) {
+        if (!chapterIndex[q.chapter]) chapterIndex[q.chapter] = {firstIdx: idx};
+    });
+
+    function isMultiSelect(q) { return q.correct.length > 1; }
+
+    function updateSelectedCount() {
+        var q = questions[currentQuestion];
+        var el = document.getElementById('selectedCount');
+        if (isMultiSelect(q) && !answered) {
+            el.textContent = selectedOptions.length > 0 ? 'Selected: ' + selectedOptions.length + ' of ' + q.correct.length + ' correct answers' : 'Select all that apply';
+        } else { el.textContent = ''; }
+    }
+
+    function selectOption(idx) {
+        if (answered) return;
+        var q = questions[currentQuestion];
+        if (isMultiSelect(q)) {
+            var pos = selectedOptions.indexOf(idx);
+            if (pos === -1) { selectedOptions.push(idx); }
+            else { selectedOptions.splice(pos, 1); }
+            var opts = document.querySelectorAll('.option');
+            opts.forEach(function(o, i) {
+                o.classList.toggle('selected', selectedOptions.indexOf(i) !== -1);
+            });
+            updateSelectedCount();
+            var cancelBtn = document.getElementById('cancelBtn');
+            if (selectedOptions.length > 0) { cancelBtn.classList.add('show'); }
+            else { cancelBtn.classList.remove('show'); }
+            if (selectedOptions.length === q.correct.length) {
+                document.getElementById('nextBtn').disabled = false;
+                submitAnswer();
+            }
+        } else {
+            selectedOptions = [idx];
+            var opts = document.querySelectorAll('.option');
+            opts.forEach(function(o, i) { o.classList.toggle('selected', i === idx); });
+            updateSelectedCount();
+            document.getElementById('cancelBtn').classList.add('show');
+            document.getElementById('nextBtn').disabled = false;
+            submitAnswer();
+        }
+    }
+
+    function submitAnswer() {
+        answered = true;
+        var q = questions[currentQuestion];
+        var isCorrect = selectedOptions.length === q.correct.length &&
+            selectedOptions.every(function(i){ return q.correct.indexOf(i) !== -1; });
+        var opts = document.querySelectorAll('.option');
+        opts.forEach(function(o, i) {
+            o.classList.remove('selected');
+            if (q.correct.indexOf(i) !== -1) { o.classList.add('correct'); }
+            else if (selectedOptions.indexOf(i) !== -1) { o.classList.add('incorrect'); }
+            o.classList.add('disabled');
+        });
+        var tag = document.getElementById('resultTag');
+        tag.textContent = isCorrect ? '✓ Correct' : '✗ Incorrect';
+        tag.className = 'result-tag ' + (isCorrect ? 'correct' : 'incorrect');
+        document.getElementById('rationaleText').textContent = q.rationale;
+        document.getElementById('rationale').classList.add('show');
+        document.getElementById('cancelBtn').classList.remove('show');
+        document.getElementById('nextBtn').disabled = false;
+    }
+
+    function cancelSelection() {
+        selectedOptions = [];
+        var opts = document.querySelectorAll('.option');
+        opts.forEach(function(o) { o.classList.remove('selected','correct','incorrect','disabled'); });
+        document.getElementById('rationale').classList.remove('show');
+        document.getElementById('resultTag').innerHTML = '';
+        document.getElementById('resultTag').className = 'result-tag';
+        document.getElementById('cancelBtn').classList.remove('show');
+        document.getElementById('nextBtn').disabled = true;
+        answered = false;
+        updateSelectedCount();
+    }
+
+    function skipQuestion() {
+        if (!answered) {
+            cancelSelection();
+        }
+        nextCard();
+    }
+
+    function nextCard() {
+        if (currentQuestion < questions.length - 1) { currentQuestion++; loadQuestion(); }
+        else { currentQuestion = 0; loadQuestion(); }
+    }
+
+    function previousCard() {
+        if (currentQuestion > 0) { currentQuestion--; loadQuestion(); }
+    }
+
+    function randomCard() {
+        var idx;
+        do { idx = Math.floor(Math.random() * questions.length); }
+        while (idx === currentQuestion && questions.length > 1);
+        currentQuestion = idx;
+        loadQuestion();
+    }
+
+    function buildChapterGrid() {
+        var grid = document.getElementById('chapterGrid');
+        grid.innerHTML = '';
+        var currentCh = questions[currentQuestion].chapter;
+        chapterList.forEach(function(item) {
+            var ch = item.ch;
+            var card = document.createElement('div');
+            card.className = 'ch-card' + (ch === currentCh ? ' active' : '');
+            card.id = 'ch-card-' + ch;
+            card.setAttribute('data-name', ('chapter ' + ch + ' ' + item.name).toLowerCase());
+            card.innerHTML = '<div class="ch-num">' + ch + '</div><div class="ch-info"><div class="ch-title">Ch ' + ch + ': ' + item.name + '</div><div class="ch-count">' + item.count + ' questions</div></div>';
+            card.onclick = (function(c){ return function(){ jumpToChapter(c); }; })(ch);
+            grid.appendChild(card);
+        });
+        var active = document.getElementById('ch-card-' + currentCh);
+        if (active) setTimeout(function(){ active.scrollIntoView({block:'nearest',behavior:'smooth'}); }, 50);
+    }
+
+    function jumpToChapter(ch) {
+        currentQuestion = chapterIndex[ch].firstIdx;
+        loadQuestion();
+        closeChapterModal();
+    }
+
+    function openChapterModal() {
+        buildChapterGrid();
+        document.getElementById('chSearch').value = '';
+        document.getElementById('chapterModal').classList.add('open');
+    }
+
+    function closeChapterModal() {
+        document.getElementById('chapterModal').classList.remove('open');
+    }
+
+    function filterChapters(query) {
+        var q = query.toLowerCase().trim();
+        document.querySelectorAll('.ch-card').forEach(function(card) {
+            card.classList.toggle('hidden', q !== '' && !card.getAttribute('data-name').includes(q));
+        });
+    }
+
+    document.getElementById('chapterModal').addEventListener('click', function(e) {
+        if (e.target === this) closeChapterModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('chapterModal').classList.contains('open')) {
+            if (e.key === 'Escape') closeChapterModal();
+            return;
+        }
+        if (e.key >= '1' && e.key <= '5') {
+            var idx = parseInt(e.key) - 1;
+            if (idx < questions[currentQuestion].opts.length) selectOption(idx);
+        } else if (e.key >= 'a' && e.key <= 'e') { selectOption(e.key.charCodeAt(0) - 97);
+        } else if (e.key >= 'A' && e.key <= 'E') { selectOption(e.key.charCodeAt(0) - 65);
+        } else if (e.key === 'ArrowLeft' && !document.getElementById('prevBtn').disabled) { previousCard();
+        } else if (e.key === 'ArrowRight' && !document.getElementById('nextBtn').disabled) { nextCard();
+        } else if (e.key === 'Escape' && document.getElementById('cancelBtn').classList.contains('show')) { cancelSelection();
+        } else if (e.key === 'r' || e.key === 'R') { randomCard();
+        } else if (e.key === 's' || e.key === 'S') { skipQuestion();
+        }
+    });
+
+    function loadQuestion() {
+        var q = questions[currentQuestion];
+        if (!q) return;
+        selectedOptions = [];
+        answered = false;
+        document.getElementById('chapterName').textContent = 'Ch ' + q.chapter + ': ' + q.chapName;
+        document.getElementById('qTypeBadge').textContent = isMultiSelect(q) ? 'Multiple' : 'Single';
+        document.getElementById('questionNumber').textContent = q.displayNumber;
+        document.getElementById('question').textContent = q.q;
+        document.getElementById('counter').textContent = (currentQuestion + 1) + '/' + questions.length;
+        document.getElementById('rationale').classList.remove('show');
+        document.getElementById('resultTag').innerHTML = '';
+        document.getElementById('resultTag').className = 'result-tag';
+        document.getElementById('cancelBtn').classList.remove('show');
+        document.getElementById('nextBtn').disabled = true;
+        document.getElementById('prevBtn').disabled = currentQuestion === 0;
+        var pct = ((currentQuestion + 1) / questions.length * 100).toFixed(1);
+        document.getElementById('progressBar').style.width = pct + '%';
+        var container = document.getElementById('options');
+        container.innerHTML = '';
+        q.opts.forEach(function(opt, i) {
+            var div = document.createElement('div');
+            div.className = 'option';
+            div.innerHTML = '<div class="option-letter">' + String.fromCharCode(65 + i) + '</div><div>' + opt + '</div>';
+            div.onclick = (function(idx){ return function(){ selectOption(idx); }; })(i);
+            container.appendChild(div);
+        });
+        updateSelectedCount();
+        document.getElementById('questionArea').scrollTop = 0;
+    }
+
+    window.previousCard = previousCard;
+    window.nextCard = nextCard;
+    window.skipQuestion = skipQuestion;
+    window.cancelSelection = cancelSelection;
+    window.randomCard = randomCard;
+    window.openChapterModal = openChapterModal;
+    window.closeChapterModal = closeChapterModal;
+    window.filterChapters = filterChapters;
+
+    loadQuestion();
+})();
+</script>
+</body>
+</html>
